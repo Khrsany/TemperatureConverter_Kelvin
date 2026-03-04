@@ -3,8 +3,10 @@ pipeline {
 
   tools {
     maven 'Maven_3'
-    // jos sulla on Jenkinsissä JDK nimellä esim. "JDK17", laita se tähän:
-    // jdk 'JDK17'
+  }
+
+  options {
+    timestamps()
   }
 
   stages {
@@ -24,7 +26,9 @@ pipeline {
 
   post {
     always {
-      junit 'target/surefire-reports/*.xml'
+      junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+
+      archiveArtifacts artifacts: 'target/site/jacoco/**', allowEmptyArchive: true
     }
   }
 }
